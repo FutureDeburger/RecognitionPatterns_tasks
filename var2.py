@@ -72,7 +72,7 @@ plt.grid()
 plt.figure()
 # отображение зависимости выборочных дисперсий от числа реализаций СВ
 
-plt.plot(range(1, K + 1), me, color='blue', label='Выборочная дисперсия')
+plt.plot(range(1, K + 1), me, color='blue', label='Выборочная мат ожидание')
 
 plt.axhline(y=m, color='red', linestyle='--', label='Теоретическое матожидание')
 plt.title('мат ожидание от числа реализаций СВ')
@@ -106,7 +106,7 @@ plt.grid()
 
 delta = np.zeros(K)
 
-for k in range(10, K + 1):  # начинаем хотя бы с 10 значений
+for k in range(10, K + 1):
     hist, bin_edges = np.histogram(x[:k], bins=bins, density=True)
 
     # центры бинов
