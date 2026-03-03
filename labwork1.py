@@ -13,7 +13,7 @@ K = 2000
 v = 3
 w = 3
 
-# теоретическое среднее и дисперсия из таблицы
+# теоретическое среднее и дисперсия
 m = v / (v + w)
 d = (v * w) / ((v + w)**2 * (v + w + 1))
 
@@ -57,13 +57,13 @@ plt.legend()
 plt.grid()
 
 
-# 4. Гистограмма + плотность
+# 4. Гистограмма и плотность распределения
 
 plt.figure()
 sns.histplot(x, bins=25, stat='density', color='lightblue', label='Гистограмма')
 
 # теоретическая плотность
-t = np.linspace(0, 1, 1000)
+t = np.linspace(0, 1, K)
 pdf = stats.beta.pdf(t, v, w)
 
 plt.plot(t, pdf, color='red', label='Теоретическая плотность')
@@ -79,11 +79,10 @@ plt.grid()
 diff = np.zeros(K)
 bins = np.linspace(0, 1, 40)
 
-for k in range(50, K):
+for k in range(10, K):
     hist, edges = np.histogram(x[:k], bins=bins, density=True)
     centers = (edges[:-1] + edges[1:]) / 2
     theoretical = stats.beta.pdf(centers, v, w)
-
     diff[k] = np.mean(np.abs(hist - theoretical))
 
 plt.figure()
