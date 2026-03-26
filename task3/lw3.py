@@ -140,20 +140,21 @@ print(f"Чернова (оценка):  {Pe_chernov:.4f}")
 
 if n == 2:
 
-    x1 = np.linspace(-2, 8, 200)
-    x2 = np.linspace(-6, 6, 200)
+    x1 = np.linspace(-2, 8, 400)
+    x2 = np.linspace(-6, 6, 400)
     X1, X2 = np.meshgrid(x1, x2)
     X = np.column_stack([X1.ravel(), X2.ravel()])
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(9, 7))
 
-    # плотности
+    # ---- Плотности ----
     for i in range(M):
         rv = multivariate_normal(mean=m[:, i], cov=C[:, :, i])
         Z = rv.pdf(X).reshape(X1.shape)
-        plt.contour(X1, X2, Z, levels=5)
+        cs = plt.contour(X1, X2, Z, levels=5)
+        plt.clabel(cs, inline=True, fontsize=8)
 
-    # классификация области
+    # ---- Области классификации ----
     Z_class = np.zeros(X.shape[0])
 
     for idx, x in enumerate(X):
@@ -167,11 +168,18 @@ if n == 2:
 
     Z_class = Z_class.reshape(X1.shape)
 
-    plt.contourf(X1, X2, Z_class, alpha=0.2)
+    plt.contourf(X1, X2, Z_class, alpha=0.25)
 
-    plt.title("Классы и границы решений")
+    # ---- Центры классов ----
+    plt.scatter(m[0, :], m[1, :], c='red', marker='x', s=100, label='Центры классов')
+
+    for i in range(M):
+        plt.text(m[0, i] + 0.1, m[1, i] + 0.1, f'w{i+1}', fontsize=12)
+
+    plt.title("Области классификации и линии равной плотности")
     plt.xlabel("x1")
     plt.ylabel("x2")
+    plt.legend()
     plt.grid(True)
     plt.gca().set_aspect('equal')
 
